@@ -1,0 +1,137 @@
+
+
+
+<?php
+session_start();
+require_once "database.php";
+
+// Affichage des produits
+// $composant
+$sql = "SELECT * FROM composant ";
+$req_select = $pdo->prepare($sql);
+$req_select->execute();
+$composant = $req_select->fetchAll();
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>composant</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    input[type="text"], button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background-color:rgb(219, 52, 183);
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+      
+    button:hover {
+      background-color:rgb(185, 41, 137);
+    }
+    table {
+      width: 80%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .actions a {
+      margin-right: 10px;
+      text-decoration: none;
+      color: #3498db;
+    }
+    .actions a:hover {
+      text-decoration: underline;
+    }
+
+    .mes {
+    padding: 80px;
+    
+
+    }
+  </style>
+</head>
+<body>
+
+
+  <h1>Liste des composants</h1>
+
+  <a  href="create-component.php">ajouter un nouveaux composant</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Libellé</th>
+        <th>Description</th>
+        <th>cout</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+
+      <?php if (count($composant) > 0): ?>
+        <?php foreach ($composant as $p): ?>
+          <tr>
+            <td><?= htmlspecialchars($p['libeller']) ?></td>
+            <td><?= htmlspecialchars($p['description']) ?></td>
+            <td><?= htmlspecialchars($p['cout']) ?></td>
+            <td class="actions">
+              <a href="update-component.php?id=<?= $p['id'] ?>">Modifier</a>
+              <a href="delete-component.php?id=<?= $p['id'] ?>" onclick="return confirm('Supprimer ce produit ?');">Supprimer</a>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+      <?php else: ?>
+        <tr><td colspan="3">Aucun produit trouvé.</td></tr>
+      <?php endif; ?>
+    </tbody>
+  </table>
+  <div class="mes">
+  <button><a href="create-component.php">produits</a></button>
+    <button><a href="create-component.php">composant</a></button>
+    <button><a href="create-nomenclature.php">nomenclature</a></button>
+      </div>
+      <script src="script.js"></script>
+</body>
+</html>
+
+
+
